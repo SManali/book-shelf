@@ -51,7 +51,7 @@ class App extends React.Component {
     renderBookDetails() {
         if (this.state.currentBookDetail) {
             return (
-                <BookDetailDescription bookDetail={this.state.currentBookDetail}  returnToSearch = {this.returnToSearch}/>
+                <BookDetailDescription bookDetail={this.state.currentBookDetail} returnToSearch={this.returnToSearch} />
             )
         }
         return (
@@ -82,6 +82,12 @@ class App extends React.Component {
                 console.error(err);
                 return;
             }
+            //To handle average rating issue in some result set
+            _.each(data.body.results.work, function (obj) {
+                if (_.isObject(obj.average_rating)) {
+                    obj.average_rating = obj.average_rating._;
+                }
+            });
             this.setState({
                 "searchResult": data.body
             });
@@ -107,7 +113,7 @@ class App extends React.Component {
         });
     }
 
-    returnToSearch(){
+    returnToSearch() {
         this.setState({
             "currentBookDetail": null,
         });
