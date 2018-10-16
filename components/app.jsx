@@ -51,7 +51,7 @@ class App extends React.Component {
     renderBookDetails() {
         if (this.state.currentBookDetail) {
             return (
-                <BookDetailDescription bookDetail={this.state.currentBookDetail}  returnToSearch = {this.returnToSearch}/>
+                <BookDetailDescription bookDetail={this.state.currentBookDetail} returnToSearch={this.returnToSearch} />
             )
         }
         return (
@@ -67,25 +67,31 @@ class App extends React.Component {
         this.setState({ loaded: true });
     }
     performSearch(text) {
-        this.showOverlay();
-        const args = {
-            data: {
-                text: text
-            },
-            header: {
-                'Content-Type': 'application/json',
-            }
-        };
-        request.post('/', args, (err, data) => {
-            this.hideOverlay();
-            if (err) {
-                console.error(err);
-                return;
-            }
-            this.setState({
-                "searchResult": data.body
+        if (text) {
+            this.showOverlay();
+            const args = {
+                data: {
+                    text: text
+                },
+                header: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            request.post('/', args, (err, data) => {
+                this.hideOverlay();
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                this.setState({
+                    "searchResult": data.body
+                });
             });
-        });
+        } else {
+            this.setState({
+                "searchResult": {}
+            });
+        }
     }
 
     showBookDetail(bookId) {
@@ -107,7 +113,7 @@ class App extends React.Component {
         });
     }
 
-    returnToSearch(){
+    returnToSearch() {
         this.setState({
             "currentBookDetail": null,
         });
