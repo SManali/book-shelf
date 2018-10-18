@@ -13,12 +13,18 @@ These instructions will get you a copy of the project up and running on your loc
 ### Technology used
 * [ExpressJs](https://expressjs.com/) - Express provides a thin layer of fundamental web application features, without obscuring Node.js features 
 * [ReactJs](https://reactjs.org/) - React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.
+* [Jasmine](https://jasmine.github.io/setup/nodejs.html) - The Jasmine node package contains helper code for developing and running Jasmine tests for node-based projects.
 
 ### Installing
 
 Run following command:
 * `npm run build-project` - To install project dependcy and build project
 * `npm start` - To start project (now go to browser and go to http://localhost:3000 to run project)
+
+### Run Test
+
+Run following command:
+* `npm run test` - To run Jasmine unit test
 
 ### Environment Variables
 
