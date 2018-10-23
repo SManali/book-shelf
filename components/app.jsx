@@ -1,6 +1,7 @@
 import request from "superagent";
 import React from "react";
 import ReactDOM from "react-dom";
+import Loader from 'react-loader';
 
 import BookDetailDescription from "./book-detail-description";
 import Search from "./search";
@@ -23,7 +24,11 @@ class App extends React.Component {
       <React.Fragment>
         <NavBar />
         <div className="parent-container container good-reads-search-container">
-          <div id="overlay-inAbox" className="overlay" />
+          <div id="overlay-inAbox" className="overlay">
+            <div className="overlay-content">
+              <Loader loaded={this.state.loaded} color="white" />
+            </div>
+          </div>
           {this.renderSearch()}
           {this.renderBookDetails()}
         </div>
@@ -83,7 +88,7 @@ class App extends React.Component {
           return;
         }
         //To handle average rating issue in some result set
-        _.each(data.body.results.work, function(obj) {
+        _.each(data.body.results.work, function (obj) {
           if (_.isObject(obj.average_rating)) {
             obj.average_rating = obj.average_rating._;
           }
