@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import Loader from 'react-loader';
 
 import BookDetailDescription from "./book-detail-description";
+import AuthorDetailDescription from "./auther-details";
 import Search from "./search";
 import SearchResult from "./search-result";
 import NavBar from "./navbar";
@@ -13,11 +14,14 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResult: {},
-      currentBookDetail: null
+      currentBookDetail: null,
+      currentAuthorDetail: null
     };
     this.performSearch = this.performSearch.bind(this);
     this.showBookDetail = this.showBookDetail.bind(this);
     this.returnToSearch = this.returnToSearch.bind(this);
+    this.returnToBookDetail = this.returnToBookDetail.bind(this);
+    this.showAuthorDetail = this.showAuthorDetail.bind(this);
   }
   render() {
     return (
@@ -31,6 +35,7 @@ class App extends React.Component {
           </div>
           {this.renderSearch()}
           {this.renderBookDetails()}
+          {this.renderAuthorDetails()}
         </div>
       </React.Fragment>
     );
@@ -41,7 +46,7 @@ class App extends React.Component {
     if (searchResult && searchResult.results && searchResult.results.work) {
       result = searchResult.results.work;
     }
-    if (this.state.currentBookDetail == null) {
+    if (this.state.currentBookDetail == null && this.state.currentAuthorDetail == null) {
       return (
         <div>
           <Search performSearch={this.performSearch} />
@@ -52,11 +57,23 @@ class App extends React.Component {
     return <div />;
   }
   renderBookDetails() {
-    if (this.state.currentBookDetail) {
+    if (this.state.currentAuthorDetail == null && this.state.currentBookDetail) {
       return (
         <BookDetailDescription
           bookDetail={this.state.currentBookDetail}
           returnToSearch={this.returnToSearch}
+          showAuthorDetail={this.showAuthorDetail}
+        />
+      );
+    }
+    return <div />;
+  }
+  renderAuthorDetails(){
+    if (this.state.currentAuthorDetail) {
+      return (
+        <AuthorDetailDescription
+          authorDetail={this.state.currentAuthorDetail}
+          returnToBookDetail={this.returnToBookDetail}
         />
       );
     }
@@ -125,7 +142,33 @@ class App extends React.Component {
 
   returnToSearch() {
     this.setState({
-      currentBookDetail: null
+      currentBookDetail: null,
+      currentAuthorDetail: null
+    });
+  }
+
+  returnToBookDetail(){
+    this.setState({
+      currentAuthorDetail: null
+    });
+  }
+  
+  showAuthorDetail(authorId) {
+    this.showOverlay();
+    const args = {
+      header: {
+        "Content-Type": "application/json"
+      }
+    };
+    request.get(`/authorDetail/${authorId}`, args, (err, data) => {
+      this.hideOverlay();
+      if (err) {
+        console.error(err);
+        return;
+      }
+      this.setState({
+        currentAuthorDetail: data.body
+      });
     });
   }
 }

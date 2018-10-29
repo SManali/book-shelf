@@ -1,19 +1,35 @@
 import React from "react";
 
 class BookDetailDescription extends React.Component {
+  constructor(props) {
+    super(props);
+    this.authorClick = this.authorClick.bind(this);
+  }
+  authorClick(event) {
+    const authorId = event.target.id;
+    this.props.showAuthorDetail(authorId);
+  }
   render() {
     const bookDetail = this.props.bookDetail;
-    let authorName = bookDetail.authors.author.name;
-    if (_.isEmpty(authorName)) {
-      authorName = "";
-      _.each(bookDetail.authors.author, function(obj, key) {
-        if (key === 0) {
-          authorName = obj.name;
-        } else {
-          authorName = authorName + " | " + obj.name;
-        }
-      });
-    }
+    const getAuthorName = () => {
+      var authorDom = [];
+      const author = bookDetail.authors.author
+      let authorName = author.name;
+      if (_.isEmpty(authorName)) {
+        authorName = "";
+        _.each(bookDetail.authors.author, function (obj, key) {
+          if (key === 0) {
+            authorDom.push(<span class="author-name-link" id={obj.id} onClick={this.authorClick}>{obj.name}</span>);
+          } else {
+            authorDom.push(<span class="author-name-link" id={obj.id}> "|" </span>);
+            authorDom.push(<span class="author-name-link" id={obj.id} onClick={this.authorClick}>{obj.name}</span>);
+          }
+        });
+      } else {
+        authorDom.push(<span class="author-name-link" id={author.id} onClick={this.authorClick}>{author.name}</span>);
+      }
+      return authorDom;
+    };
     return (
       <div className="book-details row" id={bookDetail.id}>
         <div className="col-1">
@@ -33,7 +49,7 @@ class BookDetailDescription extends React.Component {
               {bookDetail.title}
             </h3>
             <div className="author-name ml-4 font-weight-bold text-secondary">
-              by {authorName}
+              by {getAuthorName()}
             </div>
             <div className="ratings-container ml-4 mt-1">
               <span className="average-rating lead">

@@ -14,3 +14,7 @@
     width: 183px;
     height: 247px;
 }
+.book-details .author-name-link{
+    cursor: pointer;
+    color: #17a2b8!important;
+}

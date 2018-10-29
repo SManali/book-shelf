@@ -40,7 +40,29 @@ const bookDetail = (bookId) => {
         });
     });
 }
+
+const authorDetail = (authorId) =>{
+    return new Promise((resolve, reject) => {
+        if(!authorId){
+            reject(new Error('Provide author Id'));
+        }
+        const url = `${process.env.GOOD_READ_URI}${process.env.GOOD_READ_AUTHOR_DETAIL}?key=${process.env.GOOD_READ_DEVELOPER_KEY}&id=${authorId}`;
+        client.get(url, {}, (data, response) => {
+            if (Number(response.statusCode) === 200) {
+                let result = {};
+                if (data && data.GoodreadsResponse) {
+                    result = data.GoodreadsResponse.author;
+                }
+                resolve(result);
+            } else {
+                reject(new Error("Error in good read API"));
+            }
+        });
+    });
+}
+
 module.exports = {
     searchBook,
-    bookDetail
+    bookDetail,
+    authorDetail
 }

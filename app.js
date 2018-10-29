@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 
 const routes = require('./routes/index');
 const bookDetails = require('./routes/book-detail');
+const authorDetails = require('./routes/author-detail');
 const app = express();
 
 //view engine set up
@@ -26,6 +27,7 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/bookDetail', bookDetails);
+app.use('/authorDetail', authorDetails);
 app.use('*', routes);
 
 // catch 404 and forward to error handler
